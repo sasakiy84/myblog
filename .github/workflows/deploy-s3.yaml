@@ -6,17 +6,17 @@ on:
 
 jobs:
   build:
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checout
-      uses: actions/checkout@v2
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checout
+        uses: actions/checkout@v2
 
-    - name: Build Index Json
-      run: npm run gen-map
+      - name: Build Index Json
+        run: npm run gen-map
 
-    - name: Deploy to s3
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      run:
-        aws s3 sync --delete --region ap-northeast-1 .dist/ s3://blog.sasakiy84.net
+      - name: Deploy to s3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run:
+          aws s3 sync --delete --region ap-northeast-1 .dist/ s3://blog.sasakiy84.net
