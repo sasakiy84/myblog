@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "npm run gen-map && vite",
     "build": "vue-tsc --noEmit && vite-ssg build",
     "preview": "vite preview",
     "gen-map": "tsc src/build.ts --module esnext --moduleResolution node --target esnext --allowSyntheticDefaultImports && node ./src/build.js"
