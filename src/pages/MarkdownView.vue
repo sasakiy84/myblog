@@ -6,8 +6,12 @@ import { onBeforeMount, ref } from 'vue';
 import axios from "axios"
 import { unified } from 'unified'
 import remarkParse from 'remark-parse'
+import { parse } from "yaml";
 import remarkRehype from 'remark-rehype'
 import rehypeStringify from 'rehype-stringify'
+import remarkExtractFrontmatter from "remark-extract-frontmatter";
+import remarkFrontmatter from "remark-frontmatter";
+
 import { useRoute } from 'vue-router';
 
 const markdown = ref("qqqqqq")
@@ -16,10 +20,18 @@ onBeforeMount(async () => {
     const { title } = useRoute().params
     // TODO: error handling
     const { status, data } = await axios.get(`/articles/${title}.md`)
-    console.log({ data })
-    const processor = unified().use(remarkParse).use(remarkRehype).use(rehypeStringify)
-    const vhtml = await processor.process(data)
-    markdown.value = vhtml.toString()
+    const processor = unified().use(remarkParse).use(remarkFrontmatter, [{
+        type: 'yaml',
+        marker: '-',
+        anywhere: false
+    }])
+        .use(remarkExtractFrontmatter, {
+            yaml: parse,
+            name: 'frontMatter'  // result.data 配下のキー名を決める
+        })
+        .use(remarkRehype).use(rehypeStringify)
+    const result = await processor.process(data)
+    markdown.value = result.toString()
 })
 
 </script>

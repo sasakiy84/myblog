@@ -1,25 +1,36 @@
 <template>
-    <h1>Articles</h1>
-    <p>
-    <ul>
-        <li v-for="article in articles" :key="article">
-            <RouterLink :to="`/articles/${article}`">{{ article }}</RouterLink>
-        </li>
-    </ul>
-    </p>
+    <h1 class="heading1">Articles</h1>
+
+    <RouterLink class="card-wrapper" v-for="article in articles" :key="article.baseFileName"
+        :to="`/articles/${article.baseFileName}`">
+        <ArticleCard :title="article.title" :description="article.description"></ArticleCard>
+    </RouterLink>
 </template>
 <script setup lang="ts">
 import axios from 'axios';
 import { onBeforeMount, ref } from 'vue';
 import { RouterLink } from "vue-router"
+import ArticleCard from '../components/ArticleCard/index.vue';
 
-const articles = ref<string[]>([])
+const articles = ref<{ baseFileName: string, title: string, description: string }[]>([])
 
 onBeforeMount(
     async () => {
-        const { data: { articles: _articles } } = await axios.get("/contents.json")
+        const { data: { articles: _articles } } = await axios.get<{ articles: { baseFileName: string, title: string, description: string }[] }>("/contents.json")
         articles.value = _articles
-        console.log(articles.value)
     }
 )
 </script>
+<style lang="scss">
+.heading1 {
+    margin-bottom: 40px;
+}
+
+.card-wrapper {
+    display: block;
+    margin-bottom: 20px;
+    margin: 0 auto 20px;
+    text-decoration: none;
+    color: black;
+}
+</style>

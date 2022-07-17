@@ -2,7 +2,7 @@
     <header class="header">
         <div class="header-content is-hidden-on-sp is-hidden-on-tab">
             <RouterLink to="/">
-                <img src="src/assets/logo.png" class="logo" alt="blog logo" />
+                <img src="/src/assets/logo.png" class="logo" alt="blog logo" />
             </RouterLink>
             <nav class="nav">
                 <RouterLink to="/articles" class="nav-item">articles</RouterLink>
@@ -14,7 +14,7 @@
             <Hamburger v-model:isOpen="isOpen"></Hamburger>
 
             <RouterLink to="/">
-                <img src="src/assets/logo.png" class="logo" alt="blog logo" />
+                <img src="/src/assets/logo.png" class="logo" alt="blog logo" />
             </RouterLink>
         </div>
     </header>
@@ -46,9 +46,9 @@ watch(() => route.fullPath, () => {
     top: 0;
     left: 0;
     right: 0;
-    height: 3.6rem;
     box-sizing: border-box;
     border-bottom: 1px solid #eaecef;
+    background-color: white;
 
     &-content {
         height: 100%;

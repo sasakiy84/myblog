@@ -12,7 +12,7 @@ import { RouterLink } from "vue-router"
 
 <style scoped lang="scss">
 .sidebar {
-    position: absolute;
+    position: fixed;
     top: 60px;
     width: 300px;
     max-width: 100%;
