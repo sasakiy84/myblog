@@ -16,6 +16,9 @@ jobs:
 
       - name: Build Index Json
         run: npm run gen-map
+      
+      - name: build static files
+        run: npm run build
 
       - name: Deploy to s3
         env:
