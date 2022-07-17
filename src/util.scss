@@ -1,0 +1,48 @@
+$breakpoint-sp: 520px;
+$breakpoint-tab: 960px;
+@mixin pc {
+  @media (min-width: ($breakpoint-tab + 1px)) {
+    @content;
+  }
+}
+@mixin tab {
+  @media (max-width: ($breakpoint-tab)) {
+    @content;
+  }
+}
+@mixin notsp {
+  @media (min-width: ($breakpoint-sp + 1px)) {
+    @content;
+  }
+}
+@mixin sp {
+  @media (max-width: ($breakpoint-sp)) {
+    @content;
+  }
+}
+
+.is-hidden-on-pc {
+  @include pc {
+    display: none !important;
+  }
+}
+.is-hidden-on-tab {
+  @include tab {
+    display: none !important;
+  }
+}
+.is-hidden-on-pc-and-tab {
+  @include notsp {
+    display: none !important;
+  }
+}
+.is-hidden-on-tab-and-sp {
+  @include tab {
+    display: none !important;
+  }
+}
+.is-hidden-on-sp {
+  @include sp {
+    display: none !important;
+  }
+}
