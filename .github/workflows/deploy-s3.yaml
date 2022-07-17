@@ -10,6 +10,9 @@ jobs:
     steps:
       - name: Checout
         uses: actions/checkout@v2
+      
+      - name: module install
+        run: npm install
 
       - name: Build Index Json
         run: npm run gen-map
