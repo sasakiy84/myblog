@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: s3-hosting-create
+Parameters:
+  YourDomainName:
+    Description: Enter your custom domain name, i.e. www.example.com 
+    Type: String
+Resources:
+  s3Bucket:
+    Type: AWS::S3::Bucket
+    Properties: 
+      AccessControl: PublicRead
+      BucketName: !Ref YourDomainName
+      WebsiteConfiguration: 
+        IndexDocument: index.html
+  s3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref s3Bucket
+      PolicyDocument:
+        Id: AccessFromInternet
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: '*'
+            Action: 's3:GetObject'
+            Resource: !Join
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref s3Bucket
+                - /*
+        
+
+Outputs:
+  WebsiteURL:
+    Value: !GetAtt s3Bucket.WebsiteURL
+    Description: URL for website hosted on S3
