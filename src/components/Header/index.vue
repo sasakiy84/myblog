@@ -7,7 +7,7 @@
       <nav class="nav">
         <RouterLink to="/articles" class="nav-item">articles</RouterLink>
         <RouterLink to="/profile" class="nav-item">profile</RouterLink>
-        <RouterLink to="/projects" class="nav-item">projects</RouterLink>
+        <RouterLink to="/works" class="nav-item">works</RouterLink>
       </nav>
     </div>
     <div class="header-content is-hidden-on-pc">

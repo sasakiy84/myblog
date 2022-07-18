@@ -8,7 +8,7 @@ import MarkdownViewVue from "./pages/MarkdownView.vue";
 import ArticleIndex from "./pages/ArticleIndex.vue";
 import Profile from "./pages/Profile.vue";
 import Top from "./pages/Top.vue";
-import Project from "./pages/ProjectIndex.vue";
+import Project from "./pages/WorkIndex.vue";
 import { RouteRecordRaw } from "vue-router";
 
 const routes: RouteRecordRaw[] = [
@@ -28,8 +28,8 @@ const routes: RouteRecordRaw[] = [
     component: Profile,
   },
   {
-    name: "projects",
-    path: "/projects",
+    name: "works",
+    path: "/works",
     component: Project,
   },
   {

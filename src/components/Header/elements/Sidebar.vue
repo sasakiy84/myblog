@@ -2,7 +2,7 @@
   <nav class="sidebar">
     <RouterLink to="/articles" class="sidebar-item">articles</RouterLink>
     <RouterLink to="/profile" class="sidebar-item">profile</RouterLink>
-    <RouterLink to="/projects" class="sidebar-item">projects</RouterLink>
+    <RouterLink to="/works" class="sidebar-item">works</RouterLink>
   </nav>
 </template>
 
