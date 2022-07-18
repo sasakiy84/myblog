@@ -22,7 +22,10 @@ const headTitle = ref("")
 const headDescription = ref("")
 const { title: baseFileName } = useRoute().params
 
+console.log(import.meta)
+
 if (import.meta.env.SSR) {
+  console.log("start in SSR")
   const { data: { articles } } = await axios.get<getAllMetaRowsResponse>("http://blog.sasakiy84.net/contents.json")
   const { title, description } = articles.find(({ baseFileName: _baseFileName }) => baseFileName === _baseFileName)!
   headTitle.value = title
