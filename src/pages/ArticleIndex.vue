@@ -7,11 +7,13 @@
     </RouterLink>
 </template>
 <script setup lang="ts">
+import { useHead } from '@vueuse/head';
 import axios from 'axios';
 import { onBeforeMount, ref } from 'vue';
 import { RouterLink } from "vue-router"
 import ArticleCard from '../components/ArticleCard/index.vue';
 import { articlesMetaRows, getAllMetaRowsResponse } from '../type';
+import { blogName } from '../utils/constant';
 
 const articles = ref<articlesMetaRows>([])
 
@@ -21,6 +23,10 @@ onBeforeMount(
         articles.value = _articles
     }
 )
+
+useHead({
+    title: `Articles | ${blogName}`
+})
 </script>
 <style lang="scss">
 .heading1 {
