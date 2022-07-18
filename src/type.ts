@@ -5,11 +5,13 @@ export type articleFrontMatter = {
   description: string;
   updatedAt: string;
   createdAt: string;
+  tags: string[];
 };
 
 export const isArticleFroontMatter = (arg: any): arg is articleFrontMatter => {
   if (!("title" in arg)) return false;
   if (!("description" in arg)) return false;
+  if (!("tags" in arg)) return false;
 
   if (!("updatedAt" in arg)) return false;
   if (!dayjs(arg.updatedAt, "YYYY-MM-DD", true).isValid()) return false;

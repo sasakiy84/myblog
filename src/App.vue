@@ -25,9 +25,13 @@ useHead({
 </template>
 
 <style scoped lang="scss">
+@import "util.scss";
 .main {
   padding: 2rem;
   max-width: 720px;
   margin: 3.6rem auto 0;
+  @include sp {
+    padding: 1rem;
+  }
 }
 </style>

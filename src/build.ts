@@ -40,7 +40,7 @@ const mdfilesPromise = publicFiles
       throw Error("title and description field required");
     }
 
-    const { title, description, updatedAt, createdAt } = frontMatter;
+    const { title, description, updatedAt, createdAt, tags } = frontMatter;
 
     return {
       baseFileName,
@@ -48,6 +48,7 @@ const mdfilesPromise = publicFiles
       description,
       updatedAt,
       createdAt,
+      tags,
     };
   });
 
