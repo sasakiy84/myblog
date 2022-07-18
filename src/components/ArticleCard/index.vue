@@ -21,6 +21,11 @@ defineProps<{
 
 .description {
   color: hsl(229, 6%, 66%);
+  line-height: 1.8;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
 
 .card {

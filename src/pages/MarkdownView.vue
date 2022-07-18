@@ -122,4 +122,9 @@ code {
   background: #f3f3f3;
   color: #444;
 }
+
+p {
+  line-height: 1.8;
+  white-space: pre-line;
+}
 </style>
