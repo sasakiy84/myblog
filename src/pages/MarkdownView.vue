@@ -27,7 +27,7 @@ onBeforeMount(async () => {
     }])
         .use(remarkExtractFrontmatter, {
             yaml: parse,
-            name: 'frontMatter'  // result.data 配下のキー名を決める
+            name: 'frontMatter'
         })
         .use(remarkRehype).use(rehypeStringify)
     const result = await processor.process(data)

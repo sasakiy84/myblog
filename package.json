@@ -7,7 +7,7 @@
     "dev": "npm run gen-map && vite",
     "build": "vue-tsc --noEmit && vite-ssg build",
     "preview": "vite preview",
-    "gen-map": "tsc src/build.ts --module esnext --moduleResolution node --target esnext --allowSyntheticDefaultImports && node ./src/build.js"
+    "gen-map": "tsc src/build.ts --outDir ./src/build --module esnext --moduleResolution node --target esnext --allowSyntheticDefaultImports && node --es-module-specifier-resolution=node ./src/build/build.js"
   },
   "dependencies": {
     "axios": "^0.27.2",

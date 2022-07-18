@@ -11,12 +11,13 @@ import axios from 'axios';
 import { onBeforeMount, ref } from 'vue';
 import { RouterLink } from "vue-router"
 import ArticleCard from '../components/ArticleCard/index.vue';
+import { articlesMetaRows, getAllMetaRowsResponse } from '../type';
 
-const articles = ref<{ baseFileName: string, title: string, description: string }[]>([])
+const articles = ref<articlesMetaRows>([])
 
 onBeforeMount(
     async () => {
-        const { data: { articles: _articles } } = await axios.get<{ articles: { baseFileName: string, title: string, description: string }[] }>("/contents.json")
+        const { data: { articles: _articles } } = await axios.get<getAllMetaRowsResponse>("/contents.json")
         articles.value = _articles
     }
 )
