@@ -23,6 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
-build.js
+src/build
 public/articles
 public/contents.json

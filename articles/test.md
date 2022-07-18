@@ -1,7 +1,8 @@
 ---
 title: さようならブログ
 description: sasasasa
-date : 2020-11-01
+createdAt : 2020-11-05
+updatedAt: 2022-11-04
 categories:
   - HTML
   - CSS
