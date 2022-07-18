@@ -33,6 +33,7 @@ if (import.meta.env.SSR) {
 }
 
 onBeforeMount(async () => {
+  console.log("in beforemount")
   const { baseFileName } = useRoute().params
   // TODO: error handling
   const { status, data } = await axios.get(`/articles/${baseFileName}.md`)
@@ -52,6 +53,7 @@ onBeforeMount(async () => {
   const {
     data: { frontMatter },
   } = result
+  console.log({ frontMatter })
   if (!isArticleFroontMatter(frontMatter)) {
     // TODO show more info
     throw Error("title and description field required");
@@ -59,6 +61,7 @@ onBeforeMount(async () => {
   headTitle.value = frontMatter.title
   headDescription.value = frontMatter.description
   markdown.value = result.toString()
+  console.log("end before mount")
 })
 useHead({
   title: computed(() => `${headTitle.value} | ${blogName}`),
@@ -70,6 +73,8 @@ useHead({
   ]
 
 })
+
+console.log("end script")
 
 
 </script>
