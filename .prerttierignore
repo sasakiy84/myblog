@@ -4,3 +4,4 @@ src/build
 public/articles
 public/contents.json
 dist/
+src/normalize.css
