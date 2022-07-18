@@ -1,14 +1,13 @@
 <template>
-    <h1>Projects</h1>
+  <h1>Projects</h1>
 </template>
 
 <script setup lang="ts">
-import { useHead } from '@vueuse/head';
-import { blogName } from '../utils/constant';
+import { useHead } from "@vueuse/head";
+import { blogName } from "../utils/constant";
 useHead({
-    title: `Projects | ${blogName}`
-})
+  title: `Projects | ${blogName}`,
+});
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

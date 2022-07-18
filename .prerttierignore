@@ -1,0 +1,6 @@
+# Ignore artifacts:
+
+src/build
+public/articles
+public/contents.json
+dist/
