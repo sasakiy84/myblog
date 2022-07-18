@@ -20,6 +20,7 @@ import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
 import remarkExtractFrontmatter from "remark-extract-frontmatter";
 import remarkFrontmatter from "remark-frontmatter";
+import rehypeHighlight from "rehype-highlight";
 
 import { useRoute } from "vue-router";
 import { useHead } from "@vueuse/head";
@@ -62,6 +63,7 @@ onBeforeMount(async () => {
       name: "frontMatter",
     })
     .use(remarkRehype)
+    .use(rehypeHighlight)
     .use(rehypeStringify);
   const result = await processor.process(data);
   const {
@@ -112,5 +114,12 @@ useHead({
     padding: 0 12px;
     font-size: 10.5px;
   }
+}
+</style>
+<style lang="scss">
+code {
+  padding: 3px 5px;
+  background: #f3f3f3;
+  color: #444;
 }
 </style>

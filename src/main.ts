@@ -1,4 +1,5 @@
 import "./normalize.css";
+import "./highlights.css";
 import "./util.scss";
 import App from "./App.vue";
 import { ViteSSG } from "vite-ssg";

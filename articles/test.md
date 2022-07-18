@@ -16,3 +16,13 @@ asasas
 
 - asasas
 - asasas
+
+`let b = c` is js expression.
+
+The following is js sentence.
+
+```ts
+if (a === b) {
+  return "c";
+}
+```
