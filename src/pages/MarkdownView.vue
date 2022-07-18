@@ -22,7 +22,7 @@ const headTitle = ref("")
 const headDescription = ref("")
 const { title: baseFileName } = useRoute().params
 
-console.log(import.meta)
+console.log(import.meta.env)
 
 if (import.meta.env.SSR) {
   console.log("start in SSR")
