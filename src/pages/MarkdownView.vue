@@ -1,5 +1,6 @@
 <template>
   <div v-html="markdown"></div>
+
 </template>
 <script setup lang="ts">
 import { computed, onBeforeMount, ref, watch } from 'vue';
@@ -22,10 +23,8 @@ const headTitle = ref("")
 const headDescription = ref("")
 const { title: baseFileName } = useRoute().params
 
-console.log(import.meta.env)
 
 if (import.meta.env.SSR) {
-  console.log("start in SSR")
   const { data: { articles } } = await axios.get<getAllMetaRowsResponse>("http://blog.sasakiy84.net/contents.json")
   const { title, description } = articles.find(({ baseFileName: _baseFileName }) => baseFileName === _baseFileName)!
   headTitle.value = title
@@ -33,8 +32,6 @@ if (import.meta.env.SSR) {
 }
 
 onBeforeMount(async () => {
-  console.log("in beforemount")
-  const { baseFileName } = useRoute().params
   // TODO: error handling
   const { status, data } = await axios.get(`/articles/${baseFileName}.md`)
   const processor = unified()
@@ -53,7 +50,6 @@ onBeforeMount(async () => {
   const {
     data: { frontMatter },
   } = result
-  console.log({ frontMatter })
   if (!isArticleFroontMatter(frontMatter)) {
     // TODO show more info
     throw Error("title and description field required");
@@ -61,7 +57,6 @@ onBeforeMount(async () => {
   headTitle.value = frontMatter.title
   headDescription.value = frontMatter.description
   markdown.value = result.toString()
-  console.log("end before mount")
 })
 useHead({
   title: computed(() => `${headTitle.value} | ${blogName}`),
@@ -74,7 +69,6 @@ useHead({
 
 })
 
-console.log("end script")
 
 
 </script>

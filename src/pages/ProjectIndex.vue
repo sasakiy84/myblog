@@ -5,7 +5,6 @@
 <script setup lang="ts">
 import { useHead } from '@vueuse/head';
 import { blogName } from '../utils/constant';
-console.log(import.meta.env)
 useHead({
     title: `Projects | ${blogName}`
 })

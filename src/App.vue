@@ -17,7 +17,12 @@ useHead({
 <template>
   <Header></Header>
   <main class="main">
-    <RouterView></RouterView>
+    <Suspense>
+      <RouterView></RouterView>
+      <template #fallback>
+        Loading...
+      </template>
+    </Suspense>
   </main>
 </template>
 
