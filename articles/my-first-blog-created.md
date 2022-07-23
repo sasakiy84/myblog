@@ -14,6 +14,13 @@ tags:
 - 自分が外出先などで気軽に情報を見れるように
 - 技術的な素振り
 
+# 全体構成図
+
+![blog architecture](/blog-architecture.png)
+
+S3 からすべてのファイルを配信する形式。記事の全件を取得する API なども、ビルド時に事前に生成しておいた json ファイルを使う。
+CI/CD は GitHub Actions を使い、master ブランチに push されれば自動でデプロイするようにした。
+
 # ブログ機能の紹介（推しポイント）
 
 個人的に、知識をため込んだテキストなどは DB に保存などではなく、テキストファイルのまま持っておきたい。バックアップが容易だし、git で差分管理もできる。シンプルな形式であるため、移行時にエクスポートやインポートの方法で頭を悩ませることもない。
@@ -100,8 +107,105 @@ S3 へは、AWS CLI とよばれるコマンドラインツールでファイル
 
 # 作成時のログ
 
-## esm import
+制作時のメモ残し的なかんじ
+
+## ESM import
+
+マークダウンのインデックスを集めて API 用の json を生成する & articles ディレクトリから public ディレクトリへマークダウンファイルを移動させる、というタスクをビルド時に実行している。この TS ファイルを ESM 形式で書いていたら実行のときに ESM 関係のエラーが出た。
+具体的には、`tsc`コマンドを使って`build.ts`をコンパイルし、`build.js`を実行するときに、`build.ts`から読み込んでいた util 系のファイルが`cannnot find module`になってしまう。
+理由は以下の通り。ESM の TS ファイルでは、import 文に拡張子をつけないことが推奨されている。例えば、`util.ts`をインポートするときは、こんな感じで書くことがいいとされている。
+
+```ts
+import { a } from "./util";
+```
+
+このインポート文は、コンパイル後に自動で`./util.js`に変換されるわけではなく、そのままである。一方で、`node`コマンドは、デフォルトでは ESM 形式の拡張子なしインポートに対応していない。
+そのため、拡張子がないファイルを読み込もうとして`cannnot find module`になる。
+
+解決策としては、
+
+```
+import { a } from "./util.js"
+```
+
+のように、コンパイル後のファイルパスを書くという方法と、
+
+```
+node --es-module-specifier-resolution=node
+```
+
+のように、ESM の拡張子なし記法を理解させるフラグを実行時につける、という方法がある。
+コンパイル後のファイルパスをコンパイル前のファイルに書くのは保守性が下がると思ったので、今回は後者を採用した。
+
+参考リンク
+[Compiled JavaScript import is missing file extension](https://github.com/microsoft/TypeScript/issues/40878)
 
 ## Heap Out Of Memory in TS Template literal
 
-## is not exported by \_\_vite-browser-external
+作成日・更新日のフィールドを作成したときに、TS のテンプレートリテラル機能を使って、文字フォーマットの確認をしようと思った。日付のフォーマット型は以下のように書ける
+
+```ts
+type oneToNine = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+type zeroToNine = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+
+type Year = `20${zeroToNine}${zeroToNine}`;
+type Month = `0${oneToNine}` | `1${0 | 1 | 2}`;
+type Day = `${0}${oneToNine}` | `${1 | 2}${zeroToNine}` | `3${0 | 1}`;
+
+export type YearMonthDay = `${Year}-${Month}-${Day}`;
+```
+
+しかし、これでビルドしようと思ったら（正確には、`vue-tsc --no-emit`を実行したら）以下のようなエラーが出た。
+
+```
+$npx vue-tsc --noEmit
+FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory
+```
+
+どうやら、テンプレートリテラルが表現する文字列がありすぎて、メモリがなくなったらしい。この記法はいろんなサイトに載っているから、普通に使えると思うんだけど、なんでだろう。
+
+解決策としては、
+
+```bash
+NODE_OPTIONS=--max_old_space_size=4096 npx vue-tsc --noEmit
+```
+
+という風に、node のメモリオプションを指定してあげればいい。が、markdown を書いているときに型注釈をつけれるわけでもないので、そこまでする必要もないか、と思った。
+
+## is not exported by \_\_vite-browser-external その一
+
+SSG のときに、vite のエントリーポイントである `main.ts` でローカルファイルを読み込みたかった。マークダウンのメタ情報を集約した API 用の json ファイルを作るためである。
+単純に`main.ts`内に書くと、
+
+```
+ReadDir is not exported by \_\_vite-browser-external
+```
+
+というエラーが出る。`vite-browser`という特殊な環境で読み込めるモジュールじゃないと使えないらしい。解決方法としては、`vite.config.ts`に記述できる`vite-ssg`の`includeRoutes`フックを使えばローカルファイルを読み込みできた。
+
+## is not exported by \_\_vite-browser-external その二
+
+dynamic routing のページに、title や　 description などのヘッドタグを動的に設定しようとしたときに`is not exported by __vite-browser-external`が再び発生した。理由は、メタ情報を得るために、ローカルファイルのマークダウンを読み込もうとしたから。
+「その一」のときは、専用のフックが用意されていたが、ページコンポーネント内部に干渉できるフックは用意されていなさそうだった。おそらく、nuxt の `asyncData` とかでもローカルファイルへのアクセスはできない気がする。
+
+`vite-browser` ということなので、`fetch`や`axios`は使えるかな、と思って試してみたら使えた。なので、github actions のワークフローでは、SSG の前に S3 にマークダウンファイルをアップして、SSG のビルド時にはページコンポーネントのメタ情報を S3 からフェッチしてくることにした。
+
+## S3 の公開設定
+
+S3 の公開設定のときに、バケット名を独自ドメインと同じ名前にしなければいけない理由について。同じにする必要があることを言っている記事はあっても、その理由に触れている記事は少なかったため（まあドキュメントに書いてあるんだけど）
+AWS S3 は、HOST ヘッダを見てバケットを判断しているっぽい。[参考](https://docs.aws.amazon.com/ja_jp/AmazonS3/latest/userguide/website-hosting-custom-domain-walkthrough.html#root-domain-walkthrough-create-buckets)
+例えば、「バケットウェブサイトエンドポイント」で設定されているエンドポイントに、HOST を変えた以下のコマンドでアクセスする。
+
+```
+curl -H "Host: wowow.com" http://blog.sasakiy84.net.s3-website-ap-northeast-1.amazonaws.com
+```
+
+すると、
+
+```
+404 Not Found
+Code: NoSuchBucket
+BucketName: wowow.com
+```
+
+という結果が返ってくる。
