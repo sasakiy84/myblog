@@ -27,23 +27,44 @@ import { useHead } from "@vueuse/head";
 import { blogName } from "../utils/constant";
 import { getAllMetaRowsResponse, isArticleFroontMatter } from "../type";
 
-const markdown = ref("qqqqqq");
+const markdown = ref("");
 const headTitle = ref("");
 const headDescription = ref("");
 const tags = ref<string[]>([]);
 const { title: baseFileName } = useRoute().params;
 
 if (import.meta.env.SSR) {
-  const {
-    data: { articles },
-  } = await axios.get<getAllMetaRowsResponse>(
-    "http://blog.sasakiy84.net/contents.json"
+  const { data } = await axios.get<getAllMetaRowsResponse>(
+    `http://blog.sasakiy84.net/articles/${baseFileName}.md`
   );
-  const { title, description } = articles.find(
-    ({ baseFileName: _baseFileName }) => baseFileName === _baseFileName
-  )!;
-  headTitle.value = title;
-  headDescription.value = description;
+  const processor = unified()
+    .use(remarkParse)
+    .use(remarkFrontmatter, [
+      {
+        type: "yaml",
+        marker: "-",
+        anywhere: false,
+      },
+    ])
+    .use(remarkExtractFrontmatter, {
+      yaml: parse,
+      name: "frontMatter",
+    })
+    .use(remarkRehype)
+    .use(rehypeHighlight)
+    .use(rehypeStringify);
+  const result = await processor.process(data);
+  const {
+    data: { frontMatter },
+  } = result;
+  if (!isArticleFroontMatter(frontMatter)) {
+    // TODO show more info
+    throw Error("title and description field required");
+  }
+  headTitle.value = frontMatter.title;
+  headDescription.value = frontMatter.description;
+  tags.value = frontMatter.tags;
+  markdown.value = result.toString();
 }
 
 onBeforeMount(async () => {

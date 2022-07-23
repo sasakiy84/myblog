@@ -23,7 +23,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: aws s3 cp --region ap-northeast-1 public/contents.json s3://blog.sasakiy84.net
+        run: aws s3 cp --exclude "*" --include "*.md" --recursive --region ap-northeast-1 articles/ s3://blog.sasakiy84.net/articles/
       - name: build static files
         run: npm run build
 
