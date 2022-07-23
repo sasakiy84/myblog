@@ -19,7 +19,7 @@ const works = [
     title: "個人ブログ",
     description:
       "ポートフォリオ&技術ブログ。UIライブラリとして Vue3 + vite 、を使用。 SSG したファイルを GitHub Actions を使用して AWS S3 にホスティングする構成。",
-    src: "https://i.ytimg.com/vi/o_RG03t7cVE/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBO_2ck7QU2z7S9CgE4gLbTm8vLEg",
+    src: "/work/blog.png",
   },
 ];
 
