@@ -120,6 +120,9 @@ useHead({
     padding: 10px 0 10px 10px;
     border-left: 4px solid #000;
   }
+  &-description {
+    line-height: 1.6;
+  }
 }
 .tags {
   .tag {
@@ -154,6 +157,11 @@ useHead({
     li {
       line-height: 1.8;
     }
+  }
+  img {
+    max-width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
   }
 }
 </style>
