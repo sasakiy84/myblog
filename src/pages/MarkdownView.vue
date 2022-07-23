@@ -27,6 +27,10 @@ import { useHead } from "@vueuse/head";
 import { blogName } from "../utils/constant";
 import { getAllMetaRowsResponse, isArticleFroontMatter } from "../type";
 
+import jsHighlight from "highlight.js/lib/languages/javascript";
+import tsHighlight from "highlight.js/lib/languages/typescript";
+import bashHighlight from "highlight.js/lib/languages/bash";
+
 const markdown = ref("");
 const headTitle = ref("");
 const headDescription = ref("");
@@ -51,7 +55,13 @@ if (import.meta.env.SSR) {
       name: "frontMatter",
     })
     .use(remarkRehype)
-    .use(rehypeHighlight)
+    .use(rehypeHighlight, {
+      languages: {
+        jsHighlight,
+        tsHighlight,
+        bashHighlight,
+      },
+    })
     .use(rehypeStringify);
   const result = await processor.process(data);
   const {
@@ -84,7 +94,13 @@ onBeforeMount(async () => {
       name: "frontMatter",
     })
     .use(remarkRehype)
-    .use(rehypeHighlight)
+    .use(rehypeHighlight, {
+      languages: {
+        javascript: jsHighlight,
+        typescript: tsHighlight,
+        bash: bashHighlight,
+      },
+    })
     .use(rehypeStringify);
   const result = await processor.process(data);
   const {
