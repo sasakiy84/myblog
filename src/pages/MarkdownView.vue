@@ -6,7 +6,7 @@
     </div>
     <p class="page-description">{{ headDescription }}</p>
   </header>
-  <article>
+  <article class="markdown-article">
     <div v-html="markdown"></div>
   </article>
 </template>
@@ -117,14 +117,22 @@ useHead({
 }
 </style>
 <style lang="scss">
-code {
-  padding: 3px 5px;
-  background: #f3f3f3;
-  color: #444;
-}
+.markdown-article {
+  code {
+    padding: 3px 5px;
+    background: #f3f3f3;
+    color: #444;
+  }
 
-p {
-  line-height: 1.8;
-  white-space: pre-line;
+  p {
+    line-height: 1.8;
+    white-space: pre-line;
+  }
+
+  ul {
+    li {
+      line-height: 1.8;
+    }
+  }
 }
 </style>
