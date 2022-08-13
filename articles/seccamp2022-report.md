@@ -11,7 +11,7 @@ tags:
 # 概要
 セキュリティキャンプ2022 の Web セキュリティクラスに参加した。参加の経緯や選考課題の解答については、以下を参照。
 
-[https://blog.sasakiy84.net/articles/seccamp-pre](https://blog.sasakiy84.net/articles/seccamp-pre)
+[https://blog.sasakiy84.net/articles/seccamp2022-pre](https://blog.sasakiy84.net/articles/seccamp2022-pre)
 
 私が参加した Webセキュリティクラスは、名前のとおり Web に関する技術・セキュリティを中心に学んでいくクラス。昨今のクラウド化や、DevOps などの流れを反映した、最新の情勢に見合った講義だった。
 
