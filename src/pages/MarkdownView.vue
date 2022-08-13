@@ -132,14 +132,17 @@ useHead({
     padding-bottom: 6px;
     margin-bottom: 30px;
   }
+
   &-title {
     padding: 10px 0 10px 10px;
     border-left: 4px solid #000;
   }
+
   &-description {
     line-height: 1.6;
   }
 }
+
 .tags {
   .tag {
     display: inline-flex;
@@ -167,6 +170,7 @@ useHead({
   p {
     line-height: 1.8;
     white-space: pre-line;
+    word-wrap: break-word;
   }
 
   ul {
@@ -174,6 +178,7 @@ useHead({
       line-height: 1.8;
     }
   }
+
   img {
     max-width: 100%;
     padding: 20px;
