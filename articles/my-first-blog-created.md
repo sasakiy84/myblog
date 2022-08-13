@@ -2,7 +2,7 @@
 title: ブログを作った
 description: 個人ブログを作った。 Vue3 + Vite で SSGをしたり GitHub Actions を用いて AWS S3 へのデプロイをしている。仕様、技術情報、追加したい機能などを書いておく。
 createdAt: 2022-07-16
-updatedAt: 2022-07-16
+updatedAt: 2022-08-12
 tags:
   - Frontend
   - Work
@@ -40,7 +40,8 @@ CI/CD は GitHub Actions を使い、master ブランチに push されれば自
 ## SSG を使用したサイトパフォーマンス
 
 ネットサーフィンをしているときに、動作の重いページにぶつかると、そのページの印象が下がる。閲覧するだけなんだから、サクサクで動いてほしい。
-という願望があるので、SSG(Static Site Generation) を使って、静的ファイルをホスティングする形にした。Page Speed Insight でも 90 点台だし、自分で使ってる感じもサクサクで満足。
+という願望があるので、SSG(Static Site Generation) を使って、静的ファイルをホスティングする形にした。~~Page Speed Insight でも 90 点台だし、自分で使ってる感じもサクサクで満足。~~
+そういえば、SSG のときに API からデータをとってきて埋め込んでも、クライアントではデータが空だから CLS が発生するんだった。これは気に入らないので、どうするか検討中。
 
 # 技術スタックと選定理由
 
