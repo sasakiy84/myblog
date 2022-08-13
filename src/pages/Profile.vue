@@ -1,7 +1,9 @@
 <template>
   <h1>Profile</h1>
-  <h2>Skill Sets</h2>
 
+  <h2>Skill Sets</h2>
+  <h3>Description</h3>
+  <p>5 段階評価で、主観的な自信を表す</p>
   <h3>Basic Skills</h3>
   <p>Git/GitHub: ++</p>
   <p>Linux/Ubuntu: ++</p>
@@ -25,8 +27,8 @@
   <p>Python: ++</p>
   <p>NLP: +</p>
 
-  <h3>Description</h3>
-  <p>
+
+  <!-- <p>
     +++++: <br />
     ソースコードを読み込み、関連ライブラリも把握している。「とりあえずやりたいことを決めましょう」
   </p>
@@ -45,7 +47,7 @@
   <p>
     +:<br />
     触ったことがある。書き捨てのコードを書いたことがある。「使うんですか…？はい、今から勉強頑張ります！」
-  </p>
+  </p> -->
 </template>
 <script setup lang="ts">
 import { useHead } from "@vueuse/head";
