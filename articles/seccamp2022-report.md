@@ -26,7 +26,7 @@ tags:
 [https://twitter.com/d0iasm/status/1558001603164000257](https://twitter.com/d0iasm/status/1558001603164000257)
 
 Web ブラウザを RFC や　HTML Living Standard などの仕様書を読み込みながら自作する講義でした。
-ブラウザは、Web セキュリティの文脈で一定の役割を果たしているが、普段開発するときに、それを意識することは少ない。むしろ、どうしてこの API にこんな制約があるのかと、不満になることもあります。
+ブラウザは、Web セキュリティの文脈で一定の役割を果たしていますが、普段開発するときに、それを意識することは少ないです。むしろ、どうしてこの API にこんな制約があるのかと、不満になることもあります。
 だけど、API が制約されている理由が当然あり、その理由を知ることでより深い理解につながります。また、具体的にどのような仕様が定められているのかを知るために、仕様書やコードを読み込む第一歩を踏み出せるような講義でした。
 
 ### 感想
@@ -140,4 +140,5 @@ OPA/Rego をさわった感想としては、ハンズオンでやった範囲�
 
 # ほかの方のブログ
 [https://diary.shift-js.info/seccamp2022/](https://diary.shift-js.info/seccamp2022/)
+[https://qiita.com/Hiyoko1213/items/a2828e36a2c7d3a40aee](https://qiita.com/Hiyoko1213/items/a2828e36a2c7d3a40aee)
 [https://speed1313.notion.site/2022-B-Web-16620482e78d43599867acaf1b3e1020](https://speed1313.notion.site/2022-B-Web-16620482e78d43599867acaf1b3e1020#34ca28722cbc458a8cb8f6936a7d9629)
