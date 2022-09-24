@@ -1,6 +1,6 @@
 ---
 title: セキュリティキャンプ2022の参加レポート
-description: セキュリティキャンプ2022 の Web セキュリティクラスに参加した。来年度以降応募する人がどのような雰囲気か知ることができるように、各講義の感想などをまとめておく。
+description: セキュリティキャンプ2022 の Web セキュリティクラスに参加しました。来年度以降応募する人がどのような雰囲気か知ることができるように、各講義の感想などをまとめておきます。
 createdAt: 2022-08-12
 updatedAt: 2022-09-24
 tags:
@@ -57,6 +57,8 @@ Google が chrome というクロスプラットフォームの大規模なコ�
 ### 講義概要
 講師の方：
 [https://twitter.com/m_mizutani](https://twitter.com/m_mizutani)
+公開資料：
+[https://twitter.com/m_mizutani/status/1573830895664267264](https://twitter.com/m_mizutani/status/1573830895664267264)
 参考資料：講師の方が書いた、講義と類似した題材の記事
 [https://zenn.dev/mizutani/books/d2f1440cfbba94 ](https://zenn.dev/mizutani/books/d2f1440cfbba94 )
 
