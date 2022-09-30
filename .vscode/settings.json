@@ -1,4 +1,4 @@
 {
-    "MarkdownPaste.path": "${workspaceRoot}/public/img/",
+    "MarkdownPaste.path": "${workspaceRoot}/img/",
     "MarkdownPaste.nameBase": "${fileBasenameNoExtension}_${datetime}"
 }
