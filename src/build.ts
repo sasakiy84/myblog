@@ -9,7 +9,7 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkStringify from "remark-stringify";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
-import { articleMetaRow, isArticleFroontMatter } from "./type";
+import { articleMetaRow, isArticleFrontMatter } from "./type";
 import dayjs from "dayjs";
 
 const PUBLIC_ARTICLE_DIR = join("public", "articles");
@@ -35,7 +35,7 @@ const mdfilesPromise = publicFiles
     const {
       data: { frontMatter },
     } = await processor.process(content);
-    if (!isArticleFroontMatter(frontMatter)) {
+    if (!isArticleFrontMatter(frontMatter)) {
       // TODO show more info
       throw Error("title and description field required");
     }

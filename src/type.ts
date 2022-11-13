@@ -8,7 +8,7 @@ export type articleFrontMatter = {
   tags: string[];
 };
 
-export const isArticleFroontMatter = (arg: any): arg is articleFrontMatter => {
+export const isArticleFrontMatter = (arg: any): arg is articleFrontMatter => {
   if (!("title" in arg)) return false;
   if (!("description" in arg)) return false;
   if (!("tags" in arg)) return false;
