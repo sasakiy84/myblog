@@ -104,8 +104,14 @@ export const useMarkdownParser = () => {
         const scope = starryNight.flagToScope(node.lang ?? "");
         if (scope === undefined) return h("pre", node.value);
         const fragment = starryNight.highlight(node.value, scope);
+        const preBlock = h(
+          "pre",
+          fragment.children.map((codeNode) => {
+            if (codeNode.type !== "doctype") return htmlNodeHandler(codeNode);
+            return "";
+          })
+        );
 
-        console.log(fragment);
         return h(
           "div",
           {
@@ -114,13 +120,7 @@ export const useMarkdownParser = () => {
               "highlight-" + scope.replace(/^source\./, "").replace(/\./g, "-"),
             ],
           },
-          h(
-            "pre",
-            fragment.children.map((codeNode) => {
-              if (codeNode.type !== "doctype") return htmlNodeHandler(codeNode);
-              return "";
-            })
-          )
+          preBlock
         );
       }
       if (type === "inlineCode") {

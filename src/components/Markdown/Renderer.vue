@@ -2,10 +2,12 @@
 import { useMarkdownParser } from "../../composables/markdownParser";
 import axios from "axios";
 import { useRoute } from "vue-router";
+import { computed } from "vue";
+import { useHead } from "@vueuse/head";
+import { blogName } from "../../utils/constant";
 
 const { parseMdToMdast, toVnode, extractMetaData } = useMarkdownParser();
 const { title: baseFileName } = useRoute().params;
-
 const mdPathURL = import.meta.env.SSR
   ? `http://blog.sasakiy84.net/articles/${baseFileName}.md`
   : `/articles/${baseFileName}.md`;
@@ -16,6 +18,16 @@ const root = parseMdToMdast(data);
 const metaData = extractMetaData(root);
 const renderFunction = await toVnode(root);
 const MarkdownRenderer = () => renderFunction;
+
+useHead({
+  title: computed(() => `${metaData.title} | ${blogName}`),
+  meta: [
+    {
+      name: "description",
+      content: computed(() => metaData.description),
+    },
+  ],
+});
 </script>
 <template>
   <header class="page-header">
