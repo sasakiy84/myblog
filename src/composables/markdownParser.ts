@@ -1,30 +1,10 @@
-import { fromMarkdown } from "mdast-util-from-markdown";
-import { gfm } from "micromark-extension-gfm";
-import { gfmFromMarkdown } from "mdast-util-gfm";
-import { frontmatter } from "micromark-extension-frontmatter";
-import { frontmatterFromMarkdown } from "mdast-util-frontmatter";
 import { createStarryNight, common } from "@wooorm/starry-night";
-import { Parent, Root, Content, FrontmatterContent } from "mdast";
+import { Parent, Root, Content } from "mdast";
 import { ElementContent } from "hast";
-import { parse } from "yaml";
+import { parseMdToMdast, extractMetaData } from "../utils/markdown";
 import { h, VNode } from "vue";
 
 export const useMarkdownParser = () => {
-  const parseMdToMdast = (markdown: string): Root => {
-    return fromMarkdown(markdown, {
-      extensions: [gfm(), frontmatter(["yaml"])],
-      mdastExtensions: [gfmFromMarkdown(), frontmatterFromMarkdown(["yaml"])],
-    });
-  };
-
-  const extractMetaData = (root: Root) => {
-    const frontMatter = root.children.filter(
-      (node) => node.type === "yaml"
-    )[0] as FrontmatterContent;
-    const metaData = parse(frontMatter.value);
-    return metaData;
-  };
-
   const toVnode = async (root: Root): Promise<VNode> => {
     const markdownNode = root.children.filter((node) => node.type !== "yaml");
     const starryNightPromise = createStarryNight(common);
