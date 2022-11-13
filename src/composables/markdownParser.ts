@@ -5,6 +5,7 @@ import { frontmatter } from "micromark-extension-frontmatter";
 import { frontmatterFromMarkdown } from "mdast-util-frontmatter";
 import { createStarryNight, common } from "@wooorm/starry-night";
 import { Parent, Root, Content, FrontmatterContent } from "mdast";
+import { ElementContent } from "hast";
 import { parse } from "yaml";
 import { h, VNode } from "vue";
 
@@ -24,10 +25,19 @@ export const useMarkdownParser = () => {
     return metaData;
   };
 
-  const toVnode = (root: Root): VNode => {
+  const toVnode = async (root: Root): Promise<VNode> => {
     const markdownNode = root.children.filter((node) => node.type !== "yaml");
     const starryNightPromise = createStarryNight(common);
-    // const starryNight = await starryNightPromise;
+    const starryNight = await starryNightPromise;
+
+    const htmlNodeHandler = (element: ElementContent): VNode | string => {
+      if (element.type !== "element") return element.value;
+      return h(
+        element.tagName,
+        element.properties,
+        element.children.map((childNode) => htmlNodeHandler(childNode))
+      );
+    };
 
     const childNodeHandler = (
       node: Content,
@@ -91,10 +101,27 @@ export const useMarkdownParser = () => {
         return h("img", { src: node.url, alt: node.alt ?? "" });
       }
       if (type === "code") {
-        // const scope = starryNight.flagToScope("ts");
-        // if (scope === undefined) return h("pre", node.value);
-        // const fragment = starryNight.highlight(node.value, scope);
-        return h("pre", node.value);
+        const scope = starryNight.flagToScope(node.lang ?? "");
+        if (scope === undefined) return h("pre", node.value);
+        const fragment = starryNight.highlight(node.value, scope);
+
+        console.log(fragment);
+        return h(
+          "div",
+          {
+            class: [
+              "highlight",
+              "highlight-" + scope.replace(/^source\./, "").replace(/\./g, "-"),
+            ],
+          },
+          h(
+            "pre",
+            fragment.children.map((codeNode) => {
+              if (codeNode.type !== "doctype") return htmlNodeHandler(codeNode);
+              return "";
+            })
+          )
+        );
       }
       if (type === "inlineCode") {
         return h("code", node.value);

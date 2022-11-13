@@ -14,9 +14,8 @@ const { status, data } = await axios.get(mdPathURL);
 
 const root = parseMdToMdast(data);
 const metaData = extractMetaData(root);
-const MarkdownRenderer = () => {
-  return toVnode(root);
-};
+const renderFunction = await toVnode(root);
+const MarkdownRenderer = () => renderFunction;
 </script>
 <template>
   <header class="page-header">
@@ -66,10 +65,11 @@ const MarkdownRenderer = () => {
 </style>
 <style lang="scss">
 .markdown-article {
-  code {
-    padding: 3px 5px;
+  pre {
+    padding: 10px 10px;
     background: #f3f3f3;
     color: #444;
+    overflow-x: auto;
   }
 
   p {
