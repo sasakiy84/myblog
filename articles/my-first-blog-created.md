@@ -125,13 +125,13 @@ import { a } from "./util";
 
 解決策としては、
 
-```
-import { a } from "./util.js"
+```ts
+import { a } from "./util.js";
 ```
 
 のように、コンパイル後のファイルパスを書くという方法と、
 
-```
+```sh
 node --es-module-specifier-resolution=node
 ```
 
@@ -158,8 +158,8 @@ export type YearMonthDay = `${Year}-${Month}-${Day}`;
 
 しかし、これでビルドしようと思ったら（正確には、`vue-tsc --no-emit`を実行したら）以下のようなエラーが出た。
 
-```
-$npx vue-tsc --noEmit
+```sh
+$ npx vue-tsc --noEmit
 FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory
 ```
 
@@ -167,7 +167,7 @@ FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaS
 
 解決策としては、
 
-```bash
+```sh
 NODE_OPTIONS=--max_old_space_size=4096 npx vue-tsc --noEmit
 ```
 
@@ -197,7 +197,7 @@ S3 の公開設定のときに、バケット名を独自ドメインと同じ�
 AWS S3 は、HOST ヘッダを見てバケットを判断しているっぽい。[参考](https://docs.aws.amazon.com/ja_jp/AmazonS3/latest/userguide/website-hosting-custom-domain-walkthrough.html#root-domain-walkthrough-create-buckets)
 例えば、「バケットウェブサイトエンドポイント」で設定されているエンドポイントに、HOST を変えた以下のコマンドでアクセスする。
 
-```
+```sh
 curl -H "Host: wowow.com" http://blog.sasakiy84.net.s3-website-ap-northeast-1.amazonaws.com
 ```
 

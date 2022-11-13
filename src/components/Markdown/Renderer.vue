@@ -79,9 +79,16 @@ useHead({
 .markdown-article {
   pre {
     padding: 10px 10px;
+    margin: 0 5px;
     background: #f3f3f3;
     color: #444;
     overflow-x: auto;
+  }
+
+  code {
+    padding: 5px 5px;
+    background: #f3f3f3;
+    color: #444;
   }
 
   p {
