@@ -2,20 +2,22 @@ import puppeteer from "puppeteer-core";
 import { executablePath } from "puppeteer";
 
 export const fetchSEOData = async (
-  targetURL: string
-): Promise<{
-  title: string;
-  ogpURL: string;
-  description: string;
-}> => {
+  targetURLs: string[]
+): Promise<
+  {
+    title: string;
+    ogpURL: string;
+    description: string;
+  }[]
+> => {
   console.log("launch browser");
   const browser = await puppeteer.launch({
     executablePath: executablePath(),
     headless: true,
     args: [
       "--no-sandbox",
-      "--single-process",
-      "--no-first-run",
+      // "--single-process",
+      // "--no-first-run",
       "--disable-dev-shm-usage",
       "--disable-setuid-sandbox",
       "--no-zygote",
@@ -38,26 +40,50 @@ export const fetchSEOData = async (
     else interceptedRequest.continue();
   });
 
-  console.log("go to page");
-  await page.goto(targetURL);
-  console.log("went to page");
-  const title = await page.title();
-  const descriptionHandle = await page.$("meta[property='og:description']");
-  const description =
-    (await page.evaluate((descriptionElement) => {
-      return descriptionElement?.getAttribute("content");
-    }, descriptionHandle)) || "";
-  const ogpURLHandle = await page.$("meta[property='og:image']");
-  const ogpURL =
-    (await page.evaluate((ogpElement) => {
-      return ogpElement?.getAttribute("content") || "";
-    }, ogpURLHandle)) || "";
+  const result: {
+    title: string;
+    ogpURL: string;
+    description: string;
+    url: string;
+  }[] = [];
+
+  for (const url of targetURLs) {
+    try {
+      console.log(`go to page ${url}`);
+      await page.goto(url, { timeout: 0, waitUntil: "load" });
+      console.log("went to page");
+      const title = await page.title();
+      console.log("get title");
+      const descriptionHandle = await page.$("meta[property='og:description']");
+      const description =
+        (
+          await page.evaluate((descriptionElement) => {
+            return descriptionElement?.getAttribute("content");
+          }, descriptionHandle)
+        )?.replaceAll("\n", "") || "";
+      console.log("get desc");
+
+      descriptionHandle?.dispose();
+      const ogpURLHandle = await page.$("meta[property='og:image']");
+      const ogpURL =
+        (await page.evaluate((ogpElement) => {
+          return ogpElement?.getAttribute("content") || "";
+        }, ogpURLHandle)) || "";
+      ogpURLHandle?.dispose();
+      console.log("get ogp");
+
+      result.push({
+        title,
+        ogpURL,
+        description,
+        url,
+      });
+    } catch (e) {
+      console.log(`fetch ${url} failed`, e);
+    }
+  }
 
   await browser.close();
 
-  return {
-    title,
-    ogpURL,
-    description,
-  };
+  return result;
 };
