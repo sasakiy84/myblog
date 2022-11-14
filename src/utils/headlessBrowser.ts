@@ -11,10 +11,32 @@ export const fetchSEOData = async (
   console.log("launch browser");
   const browser = await puppeteer.launch({
     executablePath: executablePath(),
+    headless: true,
+    args: [
+      "--no-sandbox",
+      "--single-process",
+      "--no-first-run",
+      "--disable-dev-shm-usage",
+      "--disable-setuid-sandbox",
+      "--no-zygote",
+      "--disable-gpu",
+    ],
   });
   console.log("launched browser");
 
   const page = await browser.newPage();
+  await page.setRequestInterception(true);
+  page.on("request", (interceptedRequest) => {
+    if (interceptedRequest.isInterceptResolutionHandled()) return;
+    if (
+      interceptedRequest.url().endsWith(".png") ||
+      interceptedRequest.url().endsWith(".jpg") ||
+      interceptedRequest.url().endsWith(".webp") ||
+      interceptedRequest.url().endsWith(".css")
+    )
+      interceptedRequest.abort();
+    else interceptedRequest.continue();
+  });
 
   console.log("go to page");
   await page.goto(targetURL);
