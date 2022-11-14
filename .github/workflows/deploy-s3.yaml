@@ -24,8 +24,12 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: aws s3 cp --exclude "*" --include "*.md" --recursive --region ap-northeast-1 articles/ s3://blog.sasakiy84.net/articles/
+
       - name: build static files
         run: npm run build
+
+      - name: build linkdata files
+        run: npm run gen-link
 
       - name: Deploy to s3
         env:
