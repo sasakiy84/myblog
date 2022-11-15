@@ -2,7 +2,6 @@ import path, { extname, join } from "path";
 import { mkdir, readdir, readFile, rm, writeFile } from "fs/promises";
 import { extractLinkCardData, parseMdToMdast } from "../utils/markdown";
 import { fetchSEOData } from "../utils/headlessBrowser";
-
 const articles = await readdir("articles");
 const fetchLinkPromimse = articles
   .filter((filename) => {
@@ -23,8 +22,6 @@ const linkCardData = (await Promise.allSettled(fetchLinkPromimse))
     return result.status === "fulfilled" ? result.value : undefined;
   })
   .filter((d) => d);
-
-// console.log(linkCardData);
 
 const promises = linkCardData.map(async (data) => {
   const seoData = await fetchSEOData(data?.links || []);

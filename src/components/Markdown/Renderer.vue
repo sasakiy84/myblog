@@ -12,11 +12,15 @@ const mdPathURL = import.meta.env.SSR
   ? `http://blog.sasakiy84.net/articles/${baseFileName}.md`
   : `/articles/${baseFileName}.md`;
 
+const seoDataURL = `/metadata/${baseFileName}.json`;
+
 const { status, data } = await axios.get(mdPathURL);
+const { data: seoData } = await axios.get(seoDataURL);
+console.log(seoData);
 
 const root = parseMdToMdast(data);
 const metaData = extractMetaData(root);
-const renderFunction = await toVnode(root);
+const renderFunction = await toVnode(root, seoData);
 const MarkdownRenderer = () => renderFunction;
 
 useHead({

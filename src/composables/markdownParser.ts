@@ -3,9 +3,18 @@ import { Parent, Root, Content } from "mdast";
 import { ElementContent } from "hast";
 import { parseMdToMdast, extractMetaData } from "../utils/markdown";
 import { h, VNode } from "vue";
+import LinkCardVue from "../components/Markdown/Elements/LinkCard.vue";
 
 export const useMarkdownParser = () => {
-  const toVnode = async (root: Root): Promise<VNode> => {
+  const toVnode = async (
+    root: Root,
+    seoData: {
+      title: string;
+      ogpURL: string;
+      description: string;
+      url: string;
+    }[]
+  ): Promise<VNode> => {
     const markdownNode = root.children.filter((node) => node.type !== "yaml");
     const starryNightPromise = createStarryNight(common);
     const starryNight = await starryNightPromise;
@@ -69,13 +78,14 @@ export const useMarkdownParser = () => {
         );
       }
       if (type === "link") {
-        return h(
-          "a",
-          { href: node.url },
-          node.children.map((childNode) =>
-            childNodeHandler(childNode, node, index)
-          )
-        );
+        console.log(seoData);
+        const metadata = seoData.find((data) => data.url === node.url);
+        return h(LinkCardVue, {
+          url: node.url,
+          title: metadata?.title || "",
+          description: metadata?.description || "",
+          ogpURL: metadata?.ogpURL || "",
+        });
       }
       if (type === "image") {
         return h("img", { src: node.url, alt: node.alt ?? "" });

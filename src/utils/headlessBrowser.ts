@@ -48,11 +48,20 @@ export const fetchSEOData = async (
   }[] = [];
 
   for (const url of targetURLs) {
+    if (/^http:\/\/localhost\//.test(url)) continue;
+
     try {
       console.log(`go to page ${url}`);
       await page.goto(url, { timeout: 0, waitUntil: "load" });
       console.log("went to page");
-      const title = await page.title();
+      const titleHandle = await page.$("meta[property='og:title']");
+      const ogTitle =
+        (
+          await page.evaluate((titleElement) => {
+            return titleElement?.getAttribute("content");
+          }, titleHandle)
+        )?.replaceAll("\n", "") || "";
+      const title = ogTitle.length === 0 ? ogTitle : await page.title();
       console.log("get title");
       const descriptionHandle = await page.$("meta[property='og:description']");
       const description =
