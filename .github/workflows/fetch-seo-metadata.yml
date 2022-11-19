@@ -1,6 +1,8 @@
 name: fetch SEO data
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * SUN"
 
 jobs:
   build:

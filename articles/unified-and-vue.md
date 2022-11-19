@@ -16,14 +16,14 @@ unified という単語は、二つの意味があります。
 一つ目は、AST(Abstract Syntax Tree) に関する何らかの機能を提供するプラグインのエコシステムのことです。AST とは、文章を木構造にしたデータのことです。プログラミング言語の実装などでよく見かけます。
 二つ目は、エコシステムのプラグインを使うためのコアパッケージの名前です。各種プラグインを登録して、統一的なインターフェースで操作できるようにしたパッケージです。
 
-unified のエコシステムには、remark や micromark などが含まれています。markdown を HTML に変換するときに使われるライブラリとしては、markdown-it や、marked などがあります。unified 側からこれらを比較しているので、参考にしてください。
+unified のエコシステムには、remark や micromark などが含まれています。unified 以外で、markdown を HTML に変換するときに使われるライブラリとしては、markdown-it や、marked などがあります。unified 側からこれらを比較しているので、参考にしてください。
 https://github.com/micromark/micromark#comparison
 
 ## v-html を使う方法
 
 今回の目的は、Vue のコンポーネントでマークダウンを描画することです。
 Vue でマークダウンを描画する方法として、ネットでよく紹介されているものは、マークダウンを単純な HTML に変換してシリアライズ（文字列化）し、それを`v-html`に渡して描画するというものです。
-この方法は簡単ですが、`v-html`に渡せるものは単純な HTML のみなので、Vue コンポーネントのメリットをうけることができません。メリットというのは、インタラクティブで複雑な UI が作りやすいなどです。
+この方法は簡単に実施可能ですが、`v-html`に渡せるものは単純な HTML のみなので、Vue コンポーネントのメリットをうけることができません。メリットというのは、たとえばインタラクティブで複雑な UI が作りやすいなどです。
 
 ## 今回使う plugin
 
@@ -61,7 +61,7 @@ https://github.com/syntax-tree/mdast-util-from-markdown
 Vue には、Render Function という機能があります。
 https://vuejs.org/guide/extras/render-function.html
 
-Vue を使うときには、template を使うことが多いと思います。しかし、template 機能ではなく、JavaScript から直接コンポーネントを操作したい場面もあります。たとえば、今回のような場合です。このとき使えるのが、Render Function です。
+Vue を使うときは、template を使うことが多いと思います。しかし、template 機能ではなく、JavaScript から直接コンポーネントを操作したい場面もあります。たとえば、今回のように AST からコンポーネントツリーを生成したい場合です。このとき使えるのが、Render Function です。
 
 ## Render Function の使い方
 
@@ -82,7 +82,7 @@ export const vnode = () => {
 };
 ```
 
-`vnode`は普通にコンポーネントとして使うことができます。
+`vnode`はコンポーネントとして、tepmlate 内で普通に使うことができます。
 
 # 実際の実装
 
@@ -95,12 +95,15 @@ import { h, VNode } from "vue";
 import { Parent, Root, Content } from "mdast";
 
 const toVnode = async (root: Root): Promise<VNode> => {
+  // 再帰関数を定義
   const childNodeHandler = (
     node: Content,
     _parentNode: Parent,
     index: number
   ): VNode | string => {
     const { type } = node;
+
+    // node の type を判定し、それにおうじてコンポーネントを描画する
     if (type === "heading") {
       return h(
         `h${node.depth}`,
@@ -127,7 +130,7 @@ const toVnode = async (root: Root): Promise<VNode> => {
 };
 ```
 
-## AST と再帰関数の操作について
+## AST と再帰関数の操作について（感想）
 
 AST の操作は慣れていないとよくわからないと思いますが、セキュリティキャンプで HTML パーサーを眺めていたため、スラっと書けました。進研ゼミでやったところだ！現象ですね。
 https://blog.sasakiy84.net/articles/seccamp2022-report
@@ -181,7 +184,7 @@ headless browser とは、GUI なしで起動するブラウザのことです�
 headless mode を操作するために、いろいろなライブラリが存在します。今回はその中から、Google が提供する`puppeter`を使いました。
 https://developer.chrome.com/docs/puppeteer/
 
-実際にブラウザを起動して、ページを取得し、JS を読み込んで実行するには時間がかかります。そのため、リアルタイム性が求められるサービスではここまでせず、単純に HTML をリクエストするだけだと思います。実際、slack や Google Document で試してみたところ、単純な SPA には対応していないようでした。
+実際にブラウザを起動して、ページを取得し、JS を読み込んで実行するには時間がかかります。そのため、リアルタイム性が求められるサービスでは SPA のメタ情報を取得することまでせず、単純に HTML をリクエストするだけだと思います。実際、slack や Google Document で試してみたところ、単純な SPA には対応していないようでした。
 
 今回は、事前にデータを生成する方式だったため、SSR をしていない SPA ページに対応することにしました。
 
